@@ -1,0 +1,38 @@
+// cat fact http server
+// write http server
+// Gin (https://go.dev/doc/tutorial/web-service-gin) mux (https://blog.logrocket.com/routing-go-gorilla-mux/) or standard http pkg (https://www.digitalocean.com/community/tutorials/how-to-make-an-http-server-in-go) can be used
+// Gin, Mux or http pkg should be used for basic functionality (create router and map function to path)
+// 
+// Under localhost:80/betterfact should serve GET endpoint
+// under this endpoint we should provide interesting fact about cat :D
+// facts should be get form https://catfact.ninja via http GET req
+// api description https://catfact.ninja/#/Facts/getRandomFact
+// response json should be converted to struct defined by programmer
+// response hit time should be logged with length information
+// use human-readable time format
+// data struct should be converted from original https://catfact.ninja to our better
+//  type BetterCatFact struct {
+//	    BestFactEver  string `json:"bestFactEver"`
+//	    UnixTimestamp int64  `json:"unixTimestamp"`
+//  }
+// Field BestFactEver should contain data from https://catfact.ninja
+// UnixTimestamp should contain unix timestamp from sending point of time:D
+//	
+// Consider following questions/hints:
+// How to organize project?
+// How to test your code?
+// How to separate business logic from transport layer?
+// Where interfaces should be used?
+// What can be mocked (use "github.com/stretchr/testify/mock" for mocking)?
+// Error handling done in right way
+//
+
+// Topics missed but important
+// panic, recover, defer
+// init function for package
+// re-slicing - unwonted data modification
+// re-slicing - "memory leak - like"
+// no set -> map[int]struct{}
+// buffered vs unbuffered channel
+// read/write on closed channel
+// no enum :( -> const pattern
