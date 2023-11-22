@@ -20,15 +20,11 @@ func (c *MockedFactApiService) Get() (domain.ApiCatFact, error) {
 func TestBetterFactService(t *testing.T) {
 	mockedApiGetter := new(MockedFactApiService)
 	fact := "Cats have four legs"
-
-	expected := domain.BetterCatFact{
-		BestFactEver: fact,
-	}
 	mockedApiGetter.On("Get").Return(domain.ApiCatFact{Fact: fact, Length: 19}, nil).Once()
 	betterFactService := app.NewBetterFactService(mockedApiGetter)
 	betterFact, err := betterFactService.Get()
 	if err != nil {
 		log.Fatal(err)
 	}
-	assert.Equal(t, betterFact.BestFactEver, expected.BestFactEver)
+	assert.Equal(t, fact, betterFact.BestFactEver)
 }
