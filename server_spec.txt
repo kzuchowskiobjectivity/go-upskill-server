@@ -10,7 +10,7 @@
 // response json should be converted to struct defined by programmer
 // response hit time should be logged with length information
 // use human-readable time format
-// data struct should be converted from original https://catfact.ninja to our better
+// data struct sho  uld be converted from original https://catfact.ninja to our better
 //  type BetterCatFact struct {
 //	    BestFactEver  string `json:"bestFactEver"`
 //	    UnixTimestamp int64  `json:"unixTimestamp"`
@@ -35,4 +35,4 @@
 // no set -> map[int]struct{}
 // buffered vs unbuffered channel
 // read/write on closed channel
-// no enum :( -> const pattern
+// no enum :( -> const pattern  
