@@ -15,5 +15,5 @@ type BetterFactService interface {
 }
 
 type FactApiService interface {
-	Get(ApiCatFact, error)
+	Get() (ApiCatFact, error)
 }

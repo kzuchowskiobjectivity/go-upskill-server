@@ -13,15 +13,15 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type MockedCatFactApiGetter struct{ mock.Mock }
+type MockedBetterFactService struct{ mock.Mock }
 
-func (c *MockedCatFactApiGetter) Get() (domain.BetterCatFact, error) {
+func (c *MockedBetterFactService) Get() (domain.BetterCatFact, error) {
 	args := c.Called()
 	return args.Get(0).(domain.BetterCatFact), args.Error(1)
 }
 
 func TestGetPet(t *testing.T) {
-	mockedApiGetter := new(MockedCatFactApiGetter)
+	mockedApiGetter := new(MockedBetterFactService)
 	handler := ihttp.NewHandler(mockedApiGetter)
 
 	testCases := []struct {

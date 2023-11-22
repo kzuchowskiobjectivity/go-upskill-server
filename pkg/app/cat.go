@@ -13,26 +13,13 @@ type CatFactApi struct {
 	apiAddress string
 }
 
-func NewFactApiGetter(apiAddress string, client http.Client) domain.BetterFactService {
+func NewFactApi(apiAddress string) domain.FactApiService {
 	return CatFactApi{
 		apiAddress: apiAddress,
 	}
 }
 
-func (c CatFactApi) Get() (domain.BetterCatFact, error) {
-	fact, err := c.GetApi()
-	var betterFact domain.BetterCatFact
-	if err != nil {
-		return betterFact, err
-	}
-	betterFact = domain.BetterCatFact{
-		BestFactEver:  fact.Fact,
-		UnixTimestamp: time.Now().Unix(),
-	}
-	return betterFact, nil
-}
-
-func (c CatFactApi) GetApi() (domain.ApiCatFact, error) {
+func (c CatFactApi) Get() (domain.ApiCatFact, error) {
 	var catFact domain.ApiCatFact
 	req, err := http.NewRequest(http.MethodGet, c.apiAddress, nil)
 	if err != nil {
@@ -55,4 +42,27 @@ func (c CatFactApi) GetApi() (domain.ApiCatFact, error) {
 		return catFact, parseErr
 	}
 	return catFact, nil
+}
+
+type BetterFactService struct {
+	api domain.FactApiService
+}
+
+func NewBetterFactService(api domain.FactApiService) domain.BetterFactService {
+	return BetterFactService{
+		api: api,
+	}
+}
+
+func (svc BetterFactService) Get() (domain.BetterCatFact, error) {
+	fact, err := svc.api.Get()
+	var betterFact domain.BetterCatFact
+	if err != nil {
+		return betterFact, err
+	}
+	betterFact = domain.BetterCatFact{
+		BestFactEver:  fact.Fact,
+		UnixTimestamp: time.Now().Unix(),
+	}
+	return betterFact, nil
 }

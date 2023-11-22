@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -29,10 +28,10 @@ func main() {
 	gin.DefaultWriter = file
 
 	factsEndpoint := viper.GetString("factEndpoint")
-	factApiGetter := app.NewFactApiGetter(factsEndpoint, http.Client{})
-
+	factApiGetter := app.NewFactApi(factsEndpoint)
+	betterFactSvc := app.NewBetterFactService(factApiGetter)
 	r := gin.Default()
-	handler := ihttp.NewHandler(factApiGetter)
+	handler := ihttp.NewHandler(betterFactSvc)
 	ihttp.Routes(&r.RouterGroup, handler)
 
 	portNumber := viper.GetString("port")
