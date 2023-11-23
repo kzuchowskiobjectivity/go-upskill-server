@@ -13,6 +13,12 @@ import (
 func main() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
+
+	// hardcoded path - bad idea
+	// when binary file builded, config must always be located 2 directory above
+	// unintuitive approach
+	// also go run path/to/main works only when run from same directory as main
+	// use execution argument as path or assume that binary and config file are in the same dir
 	viper.AddConfigPath("../../.")
 	err := viper.ReadInConfig()
 	if err != nil {

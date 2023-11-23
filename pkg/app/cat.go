@@ -28,8 +28,17 @@ func (c CatFactApi) Get() (domain.ApiCatFact, error) {
 	client := http.DefaultClient
 	res, getErr := client.Do(req)
 	if getErr != nil {
+		// more idiomatic
+		// should return fresh domain.ApiCatFact{}
 		return catFact, getErr
 	}
+
+	// from documentation:
+	// " The http Client and Transport guarantee that Body is always
+	// non-nil, even on responses without a body or responses with
+	// a zero-length body."
+	// so no need to nil check, but error check must be done before close
+	// https://medium.com/@KeithAlpichi/go-gotcha-closing-a-nil-http-response-body-with-defer-9b7a3eb30e8c
 	if res.Body != nil {
 		defer res.Body.Close()
 	}

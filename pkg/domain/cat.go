@@ -10,10 +10,12 @@ type ApiCatFact struct {
 	Length int    `json:"length"`
 }
 
+// more idiomatic approach
+// interface is used only in handlers, can be moved there
 type BetterFactService interface {
 	Get() (BetterCatFact, error)
 }
 
-type FactApiService interface {
-	Get() (ApiCatFact, error)
-}
+// type FactApiService interface {
+// 	Get() (ApiCatFact, error)
+// }
