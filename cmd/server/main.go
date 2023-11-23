@@ -35,5 +35,5 @@ func main() {
 	ihttp.Routes(&r.RouterGroup, handler)
 
 	portNumber := viper.GetString("port")
-	r.Run(portNumber)
+	r.Run(portNumber) // Do not leave errors unhandled
 }
