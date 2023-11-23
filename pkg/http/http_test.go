@@ -20,7 +20,7 @@ func (c *MockedBetterFactService) Get() (domain.BetterCatFact, error) {
 	return args.Get(0).(domain.BetterCatFact), args.Error(1)
 }
 
-func TestGetPet(t *testing.T) {
+func TestGetFact(t *testing.T) {
 	mockedApiGetter := new(MockedBetterFactService)
 	handler := ihttp.NewHandler(mockedApiGetter)
 
