@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/api"
 	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/app"
 	ihttp "github.com/kzuchowskiobjectivity/go-upskill-server/pkg/http"
 	"github.com/spf13/viper"
@@ -14,12 +16,9 @@ func main() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 
-	// hardcoded path - bad idea
-	// when binary file builded, config must always be located 2 directory above
-	// unintuitive approach
-	// also go run path/to/main works only when run from same directory as main
-	// use execution argument as path or assume that binary and config file are in the same dir
-	viper.AddConfigPath("../../.")
+	configFlag := flag.String("configPath", ".", "Set path to config")
+	flag.Parse()
+	viper.AddConfigPath(*configFlag)
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -34,7 +33,7 @@ func main() {
 	gin.DefaultWriter = file
 
 	factsEndpoint := viper.GetString("factEndpoint")
-	factApiGetter := app.NewFactApi(factsEndpoint)
+	factApiGetter := api.NewFactApi(factsEndpoint)
 	betterFactSvc := app.NewBetterFactService(factApiGetter)
 	r := gin.Default()
 	handler := ihttp.NewHandler(betterFactSvc)
