@@ -6,10 +6,6 @@ import (
 	"net/http"
 )
 
-type FactApiService interface {
-	Get() (ApiCatFact, error)
-}
-
 type ApiCatFact struct {
 	Fact   string `json:"fact"`
 	Length int    `json:"length"`
@@ -19,30 +15,33 @@ type CatFactApi struct {
 	apiAddress string
 }
 
-func NewFactApi(apiAddress string) FactApiService {
+func NewFactApi(apiAddress string) CatFactApi {
 	return CatFactApi{
 		apiAddress: apiAddress,
 	}
 }
 
 func (c CatFactApi) Get() (ApiCatFact, error) {
-	var catFact ApiCatFact
 	req, err := http.NewRequest(http.MethodGet, c.apiAddress, nil)
 	if err != nil {
-		return catFact, err
+		return ApiCatFact{}, err
 	}
+
 	client := http.DefaultClient
 	res, getErr := client.Do(req)
 	if getErr != nil {
-		return catFact, getErr
+		return ApiCatFact{}, getErr
 	}
+
 	body, readErr := io.ReadAll(res.Body)
 	if readErr != nil {
-		return catFact, readErr
+		return ApiCatFact{}, readErr
 	}
+
+	var catFact ApiCatFact
 	parseErr := json.Unmarshal(body, &catFact)
 	if parseErr != nil {
-		return catFact, parseErr
+		return ApiCatFact{}, parseErr
 	}
 	return catFact, nil
 }

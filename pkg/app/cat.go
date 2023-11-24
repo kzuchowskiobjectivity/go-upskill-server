@@ -7,11 +7,15 @@ import (
 	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/domain"
 )
 
-type BetterFactService struct {
-	api api.FactApiService
+type FactApiService interface {
+	Get() (api.ApiCatFact, error)
 }
 
-func NewBetterFactService(api api.FactApiService) BetterFactService {
+type BetterFactService struct {
+	api FactApiService
+}
+
+func NewBetterFactService(api FactApiService) BetterFactService {
 	return BetterFactService{
 		api: api,
 	}
