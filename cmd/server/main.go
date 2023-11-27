@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/api"
 	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/app"
 	ihttp "github.com/kzuchowskiobjectivity/go-upskill-server/pkg/http"
 	"github.com/spf13/viper"
@@ -13,7 +15,10 @@ import (
 func main() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
-	viper.AddConfigPath("../../.")
+
+	configFlag := flag.String("configPath", ".", "Set path to config")
+	flag.Parse()
+	viper.AddConfigPath(*configFlag)
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -28,12 +33,15 @@ func main() {
 	gin.DefaultWriter = file
 
 	factsEndpoint := viper.GetString("factEndpoint")
-	factApiGetter := app.NewFactApi(factsEndpoint)
+	factApiGetter := api.NewFactApi(factsEndpoint)
 	betterFactSvc := app.NewBetterFactService(factApiGetter)
 	r := gin.Default()
 	handler := ihttp.NewHandler(betterFactSvc)
 	ihttp.Routes(&r.RouterGroup, handler)
 
 	portNumber := viper.GetString("port")
-	r.Run(portNumber) // Do not leave errors unhandled
+	runErr := r.Run(portNumber)
+	if runErr != nil {
+		log.Fatal(err)
+	}
 }

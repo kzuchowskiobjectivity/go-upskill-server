@@ -7,11 +7,15 @@ import (
 	"github.com/kzuchowskiobjectivity/go-upskill-server/pkg/domain"
 )
 
-type Handler struct {
-	factGetter domain.BetterFactService
+type BetterFactService interface {
+	Get() (domain.BetterCatFact, error)
 }
 
-func NewHandler(factGetter domain.BetterFactService) *Handler {
+type Handler struct {
+	factGetter BetterFactService
+}
+
+func NewHandler(factGetter BetterFactService) *Handler {
 	return &Handler{
 		factGetter: factGetter,
 	}
